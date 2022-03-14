@@ -1,5 +1,8 @@
+//TODO :code not working. Should be updated to make it work. As polymorphism is not 
+//important, skipping it.
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 //base class
@@ -33,7 +36,7 @@ class Employee {
         stm << name << ": " <<pay;
         return stm.str();
     }
-    double grossPay(int hours){
+    virtual double grossPay(int hours){
         return pay * hours;
     }
     ~Employee(){}
@@ -55,8 +58,7 @@ class Manager : public Employee{
         bool getSalaried(){
             return salaried;
         }
-           
-         double grossPay(double hours){
+        double grossPay(double hours){
              if (salaried){
                  return pay;
              }
@@ -68,17 +70,27 @@ class Manager : public Employee{
 
 
 int main(){
- 
+    
+    vector<Employee> emps;
+    
     Employee emp1("Emp1",1200);
     Employee emp2("Emp2",2400);
     
-    cout << emp1.toString() << endl;
-    cout << emp2.toString() << endl;
-    cout << emp2.grossPay(40) << endl;
+    Manager mgr1("Mgr1",1200, true);
     
-    Manager emp3("Emp3",3400,true);
-    cout << emp3.getName() << endl;
-    cout << emp3.getPay() << endl;
-    cout << emp3.getSalaried() << endl;
-    cout << emp3.grossPay() << endl;
+    emps.push_back(emp1);
+    emps.push_back(mgr1);
+    for (int i=0; i< emps.size(); ++i){
+        cout << emps[i].grossPay(40) << endl;
+    }
+    
+    Employee *empPtr;
+    empPtr = &emp1;
+    cout << "Name:" << empPtr->getName() << endl;
+    cout << "Pay:" << empPtr->grossPay(40) << endl;
+    empPtr = &mgr1;
+    cout << "Name:" << empPtr->getName() << endl;
+    cout << "Name:" << empPtr->grossPay(40) << endl;
+    
+    return 0;
 }
